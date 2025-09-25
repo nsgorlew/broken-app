@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 import uvicorn
-
+from job import Job
 from os import getenv
 import json
 
@@ -15,15 +15,16 @@ app = FastAPI(
 @app.post("/predict")
 async def predict(request: Request):
     try:
-        data = json.loads(request.model_dump_json())
-        result = data["message"]
-        return JSONResponse(content={"message": result}, status_code=200)
-    except KeyError as ke:
-        return JSONResponse(content={"message": f"KeyError: {ke}"}, status_code=200)
-    except ValueError as ve:
-        return JSONResponse(content={"message": f"ValueError: {ve}"}, status_code=200)
+        job = Job()
+
+        loan_application_data = await request.json()
+        clean_data = job.prepare_data(loan_application_data)
+        prediction = job.predict(clean_data)
+
+        return JSONResponse(content={"rate": prediction}, status_code=200)
+
     except Exception as e:
-        return JSONResponse(content={"message": f"Exception: {e}"}, status_code=200)
+        return JSONResponse(content={"message": f"Exception: {e}"}, status_code=500)
 
 
 @app.get("/ping")

@@ -20,7 +20,6 @@ import sys
 
 cpu_count = multiprocessing.cpu_count()
 model_server_timeout = os.environ.get('MODEL_SERVER_TIMEOUT', 60)
-model_server_workers = int(os.environ.get('MODEL_SERVER_WORKERS', cpu_count))
 APP = "main:app"
 logger = structlog.get_logger(src="serve.py")
 
@@ -48,7 +47,7 @@ def start_server():
     nginx = subprocess.Popen(['nginx', '-c', '/opt/program/nginx.conf'])
     gunicorn = subprocess.Popen(["gunicorn",
                                  "--bind", "unix:/tmp/gunicorn.sock",
-                                 "--workers", str(model_server_workers),
+                                 "--workers", "2",
                                  "--worker-class", "uvicorn.workers.UvicornWorker",
                                  f"{APP}"
                                  ]
