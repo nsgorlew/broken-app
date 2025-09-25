@@ -12,8 +12,8 @@ app = FastAPI(
 )
 
 
-@app.post("/")
-async def index(request: Request):
+@app.post("/predict")
+async def predict(request: Request):
     try:
         data = json.loads(request.model_dump_json())
         result = data["message"]

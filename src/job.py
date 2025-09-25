@@ -6,6 +6,11 @@ class Job:
     def __init__(self):
         pass
 
-    def run(self, input_data: dict):
+    def get_data(self):
+        pass
 
-        return result
+    def prepare_data(self):
+        pass
+
+    def predict(self):
+        pass
