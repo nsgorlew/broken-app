@@ -13,7 +13,7 @@ class Job:
         return obj
 
     def prepare_data(self, data):
-        prepared_data = data  # Data would be preprocessed here
+        prepared_data = clean_data(data) # Data would be preprocessed here
         return prepared_data
 
     def predict(self, prepared_data):
